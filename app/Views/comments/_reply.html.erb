@@ -1,0 +1,30 @@
+<% comments.each do |comment| %>
+  <div class="comments-show">
+    <div class="comment" id="comment-<%= comment.id %>">
+      <% if comment.user.banned? %>
+        <p><strong>User has been banned</strong></p>
+      <% else %>
+        <p><strong><%= link_to comment.user.nickname, user_path(comment.user) %></strong> <%= comment.body %><br></p>
+      <% end %>
+      <% if current_user %>
+      <% unless current_user.banned? %>
+        <div class="comment-nav"><a href="#" class="comment-reply">reply</a></div>
+        <div class="reply-form">
+          <%= form_for @new_comment do |f| %>
+            <%= f.hidden_field :commentable_id, value: @new_comment.commentable_id %>
+            <%= f.hidden_field :commentable_type, value: @new_comment.commentable_type %>
+            <%= f.hidden_field :comment_id, value: comment.id %>
+            <div class="field form-group">
+              <%= f.text_area :body, class: 'form-control' %>
+            </div>
+            <div class="field form-group">
+              <%= submit_tag "Post Reply", class: 'btn btn-primary' %>
+            </div>
+          <% end %>
+        </div>
+        <% end %>
+      <% end %>
+    </div>
+    <%= render "comments/reply", comments: comment.children %>
+  </div>
+<% end %>
