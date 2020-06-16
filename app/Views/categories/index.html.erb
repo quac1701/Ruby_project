@@ -1,0 +1,29 @@
+<div class="content-inside">
+<!--<p id="notice"><%= notice %></p>-->
+
+<h1>Categories</h1>
+
+<div class="row">
+
+    <% @categories.each do |category| %>
+       <div class="col-sm-6 col-md-3">
+        <div class="card card-margin">
+          <a class="card-anchor" href="/categories/<%= category.id%>">
+          <img class="card-img-top" src="http://waynehastings.com/wp-content/uploads/2014/11/book_category.jpg" alt="Books image">
+          <div class="card-body">
+            <h4 class="card-title"><%= category.name %></h4>
+            <p class="card-text">Show <%= category.name %></p>
+          </div>
+          </a>
+          <div class="card-footer">
+            <div class="row">
+              <div class="col"><%= link_to 'Edit', edit_category_path(category), class:"btn btn-outline-warning btn-sm btn-block" %></div>
+              <div class="col"><%= link_to 'Remove', category, method: :delete, data: { confirm: 'Remove the category permanently from the database? Are you sure?' }, class:"btn btn-outline-danger btn-sm btn-block" %></div>
+            </div>
+          </div>
+        </div>
+       </div>
+    <% end %>
+</div>
+</div>
+<div class="action-panel transparent-white eighty-percent"><a href="/categories/new" class="btn btn-primary float-right"><i class="fa fa-plus" aria-hidden="true"></i> &nbsp;New Category</a></div>
