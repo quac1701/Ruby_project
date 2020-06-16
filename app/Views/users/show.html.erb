@@ -1,0 +1,26 @@
+<div class= "content-inside">
+
+<div class="row">
+  <div class="col-sm-2">
+      <div class="transparent-white form-size">
+<%= image_tag @user.avatar, class:"img-thumbnail img-fluid",
+    onerror: "this.src='http://i.imgur.com/3cg67mg.jpg';"%><h2><%= @user.nickname %></h2>
+<% if user_signed_in? %>
+  <%= link_to t("user.edit"), edit_user_registration_path, class: "btn btn-outline-warning" %>
+<%end%>
+<% if current_user.admin? && @user.regular_user? %>
+  <%= @user.banned? ? render("unban_button", user: @user) : render("ban_button", user: @user) %>
+<% end %>
+</div>
+</div>
+  <div class="col-sm-10">
+      <h1><%= t("books.your")%></h1>
+<div class="row">
+<% @user.books.accepted.each do |book| %>
+  <%= render book %>
+<% end %>
+</div>
+  </div>
+</div>
+<div class="action-panel transparent-white eighty-percent"><a href="/books/new" class="btn btn-primary float-right"><i class="fa fa-plus" aria-hidden="true"></i> &nbsp;<%= t("books.new")%></a></div>
+</div>
