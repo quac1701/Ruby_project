@@ -1,0 +1,60 @@
+<%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put, class:"form-size transparent-white" }) do |f| %>
+  <h2>Update your profile</h2>
+  <div class="form-group">
+    <%= f.label :email %><br />
+    <%= f.email_field :email, class: "form-control", autofocus: true %>
+  </div>
+
+  <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+    <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
+  <% end %>
+
+  <div class="form-group">
+    <%= f.label :nickname %><br />
+    <%= f.text_field :nickname, class: "form-control", autocomplete: "off" %>
+  </div>
+
+  <div class="form-group">
+
+    <%= f.label :avatar %><br />
+    <% if current_user.avatar.url.present? %>
+      <%= image_tag(current_user.avatar.thumb.url, class:"img-thumbnail") %>
+      <br />
+      <%= f.check_box :remove_avatar %>
+      <%= f.label :remove_avatar %>
+      <br />
+    <% end %>
+    <%= f.file_field :avatar   %>
+    <%= f.hidden_field :avatar_cache %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :password %> <small class="text-muted">Please leave it blank if you don't want to change</small><br />
+    <%= f.password_field :password, class: "form-control", autocomplete: "off" %>
+    <small id="passwordHelp" class="form-text text-muted">Password needs to contain at least <%= @minimum_password_length %> characters</small>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :password_confirmation %> <small class="text-muted">Please re-enter the new password</small><br />
+    <%= f.password_field :password_confirmation, class: "form-control", autocomplete: "off" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :current_password %> <small class="text-muted">To confirm changes, please enter your current password</small><br />
+    <%= f.password_field :current_password, class: "form-control", autocomplete: "off" %>
+  </div>
+
+  <%= devise_error_messages! %>
+
+  <div class="actions">
+    <%= f.submit "Update", class:"btn btn-outline-warning" %>
+  </div>
+<% end %>
+<br />
+<div class="form-size alert alert-danger">
+  <h3>Remove my account permanently</h3>
+
+  <p>You will not be able to access your previously created content anymore! Proceed?</p>
+  <%= button_to "Remove my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete, class:"btn btn-outline-danger" %>
+
+</div>
