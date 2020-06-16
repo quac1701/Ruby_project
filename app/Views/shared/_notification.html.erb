@@ -1,0 +1,40 @@
+<% if noti.notice_type == 'BOOK_REQUEST' %>
+ <% unless noti.book.nil? %>
+ <% target_link = noti.request_status == 'ACCEPTED' ? book_path(noti.book.id) : edit_book_path(noti.book.id) %>
+<% end %>
+<% else %>
+  <% target_link = review_path(noti.comment.commentable_id, anchor: "comment-#{noti.comment.id}") %>
+<% end %>
+<a class="dropdown-item notification <%= noti.is_read ? 'notification-read' : 'notification-not-read' %>" href="<%= target_link %>">
+  <% if noti.notice_type == 'BOOK_REQUEST' %>
+    <span class="col-md-3">
+    <% unless noti.book.nil? %>
+      <%= image_tag noti.book.cover, width: '30' %>
+    <% end %>
+      </span>
+
+    <% if noti.request_status == 'ACCEPTED' %>
+      <span class="col-md-8">
+        <p class="notification-content">
+        <% unless noti.book.nil? %>
+          <%= noti.notified_by.nickname %> accepted your request of <strong><%= noti.book.title %></strong>
+        <% end %>
+        </p>
+      </span>
+    <% else %>
+      <span class="col-md-8">
+        <p class="notification-content">
+        <% unless noti.book.nil? %>
+          <%= noti.notified_by.nickname %> rejected your request of <strong><%= noti.book.title %></strong>
+        <% end %>
+        </p>
+      </span>
+    <% end %>
+  <% elsif noti.notice_type == 'REPLY' %>
+  <span class="col-md-8">
+    <p class="notification-content">
+      <%= noti.notified_by.nickname %> replied to your comment.
+    </p>
+  </span>
+  <% end %>
+</a>
