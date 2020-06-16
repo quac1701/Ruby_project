@@ -1,0 +1,100 @@
+<div class="content-inside">
+  <div class="row">
+    <div class="col-md-4">
+      <div class="form-size transparent-white">
+
+        <div class="row">
+          <div class="col-6">
+            <img src="<%= @book.cover %>" alt="This book's cover" class="img-thumbnail">
+          </div>
+          <div class="col-6">
+            <h5>
+              <em>"<%= @book.title %>"</em>
+            </h5>
+
+            <p>
+              <strong><%= t("books.written_by") %></strong>
+              <%= link_to(@book.author, search_index_path(keyword: @book.author, search_by: "Author")) %>
+              <br />
+              <strong><%= t("books.published_in") %></strong>
+              <%= @book.public_year %><br />
+              <strong><%= t("books.synopsis") %></strong>
+              <%= @book.synopsis %><br />
+              <%= link_to t("books.link_to_amazon"), @book.link, target: :_blank %><br />
+              <% if @reviews.any? %>
+              <strong><%= t("books.rating") %></strong>
+              <%= @reviews.average(:rating).round(1) %><br />
+            </p>
+            <p class="text-muted">
+              <strong><%= t("books.added_by", user: @book.user.nickname) %></strong>
+            </p>
+            <% end %>
+          </div>
+        </div>
+        <hr>
+        &nbsp;
+        <% unless notice.to_s.strip.empty? %>
+        <p id="notice" class="alert alert-info"><%= notice %></p>
+        <% end %>
+        <% if current_user %>
+          <% if current_user.bookmarked?(@book) %>
+            <%= render "bookmarks/unbookmark", book: @book, user: current_user %>
+          <% else %>
+            <%= render "bookmarks/bookmark", book: @book, user: current_user %>
+          <% end %>
+        <% end %>
+
+        <% if current_user && current_user.id == @book.user.id %>
+        <%= link_to t("books.edit") , edit_book_path(@book), class:"btn btn-outline-warning" %>
+        <%= link_to t("books.remove"), @book, method: :delete, data: { confirm: 'Remove the book permanently from the database? Are you sure?' }, class:"btn btn-outline-danger" %>
+        <% end %>
+
+      </div>
+
+    </div>
+    <div class="col-md-8">
+        <% unless @book.pending? %>
+          <div class="form-size">
+            <h1><%= t("books.reviews") %></h1>
+            <% unless @reviews.any? %>
+              <p><%= t("books.be_the_first")%></p>
+              <%= link_to new_book_review_path(@book), class:"btn btn-primary" do %><i class="fa fa-pencil-square-o" aria-hidden="true"></i> &nbsp;<%= t("books.review_this_book")%><% end %>
+            <% end %>
+          </div>
+
+          <% @reviews.each do |review| %>
+            <div class="form-size transparent-white">
+              <div>
+                <p>
+                  <i class="fa fa-quote-right w3-xxlarge"></i><br>
+                  <i><%= review.content %></i><br>
+                  <i class="fa fa-quote-left float-right w3-xxlarge"></i><br>
+                </p>
+                <p>
+                  - <strong><%= link_to review.user.nickname, user_path(review.user) %></strong> rated this book <strong><%= review.rating %></strong> out of 5.
+                </p>
+              </div>
+              <div class="review-actions">
+                <div class="review-go-action">
+                  <%= link_to t("books.see_review"), review_path(review) %>
+                </div>
+              </div>
+              <% if current_user && current_user.id == review.user.id %>
+                <%= link_to t("books.edit"), edit_book_review_path(@book, review), class:"btn btn-outline-warning" %>
+                <%= link_to t("books.remove"), [@book, review], class:"btn btn-outline-danger", method: :delete,
+                  data: {confirm: 'Remove review permanently from the database? Are you sure?'}%>
+              <% end %>
+            </div>
+          <% end %>
+
+          <div class="action-panel transparent-white eighty-percent">
+            <%= link_to new_book_review_path(@book), class:"btn btn-primary float-right" do %>
+              <i class="fa fa-pencil-square-o" aria-hidden="true"></i> &nbsp;<%= t("books.review_this_book")%>
+            <% end %>
+          </div>
+        <% end %>
+
+
+    </div>
+  </div>
+</div>
