@@ -1,0 +1,37 @@
+<div class="content-inside">
+
+<h1>Book Requests</h1>
+<p id="notice"><%= notice %></p>
+  <div class="row">
+    <% @pending_books.each do |book| %>
+      <div class="col-sm-6 col-md-3">
+        <div class="card card-margin">
+          <% if book.cover.present? %>
+            <%= image_tag(book.cover.url, class: "card-img-top")%>
+          <% else %>
+            <%= image_tag "http://4.darkroom.stylist.co.uk/980/14a54a22c321c8968559825625c2def5:b6a41ec79d439f19d31111577dacf6dd/books.jpg", class: "card-img-top" %>
+          <% end %>
+          <div class="card-body">
+            <h5 class="card-text"><%= book.author %></h5>
+            <h4 class="card-title"><em>"<%= book.title %>"</em><small>, <%= book.public_year %>.</small></h4>
+          </div>
+          <div class="card-footer">
+            <p class="text-muted"><%= t("books.added_by", user: book.user.nickname)%></p>
+            <div class="row">
+              <div class="col">
+                <%= form_for book, url: accept_request_book_path(book), html: {method: :patch} do |f| %>
+                  <%= f.hidden_field :status, value: "accepted" %>
+                  <%= f.submit t("books.accept"), class:"btn btn-outline-warning btn-sm btn-block"%>
+                <% end %>
+                <%= form_for book, url: reject_request_book_path(book), html: {method: :patch} do |f| %>
+                  <%= f.hidden_field :status, value: "rejected" %>
+                  <%= f.submit t("books.reject"), class:"btn btn-outline-danger btn-sm btn-block"%>
+                <% end %>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+    <% end %>
+  </div>
+</div>
