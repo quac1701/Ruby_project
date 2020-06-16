@@ -1,0 +1,30 @@
+<div class="form-size transparent-white">
+  <div class="row">
+    <div class="col-md-4">
+      <%= image_tag @review.book.cover, class: "img-responsive", style: "width: 100%" %>
+    </div>
+    <div class="col-md-8">
+      <p>
+        <h3><strong><%= @review.book.title %></strong></h3><br>
+        <h4>By <i><%= @review.book.author %></i></h4>
+      </p>
+    </div>
+  </div>
+</div>
+
+<div class="form-size transparent-white">
+  <div>
+    <p>
+      <i class="fa fa-quote-right w3-xxlarge"></i><br>
+      <i><%= @review.content %></i><br>
+      <i class="fa fa-quote-left float-right w3-xxlarge"></i><br>
+    </p>
+    <p>
+      - <strong><%= link_to @review.user.nickname, user_path(@review.user) %></strong> rated this book <strong><%= @review.rating %></strong> out of 10.
+    </p>
+  </div>
+</div>
+
+<div class="form-size transparent-white">
+  <%= render "comments/template", commentable: @review, new_comment: @new_comment %>
+</div>
