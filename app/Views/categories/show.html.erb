@@ -1,0 +1,21 @@
+<div class="form-size transparent-white">
+
+<p>
+  <strong>Name:</strong>
+  <%= @category.name %>
+</p>
+
+<% unless notice.to_s.strip.empty? %>
+<p id="notice" class="alert alert-info"><%= notice %></p>
+<% end %>
+<%= link_to 'OK', categories_path, class:"btn btn-outline-success" %>
+<% unless current_user.regular_user? %>
+<%= link_to 'Edit', edit_category_path(@category), class:"btn btn-outline-warning" %>
+<%= link_to 'Remove', @category, method: :delete, data: { confirm: 'Remove the category permanently from the database? Are you sure?' }, class:"btn btn-outline-danger" %>
+<% end %>
+</div>
+<div class="row">
+  <% @books.each do |book| %>
+    <%= render book %>
+  <% end %>
+</div>

@@ -1,0 +1,10 @@
+<div class="content-inside">
+  <h1>Bookmarked List</h1>
+  <div class="row">
+      <% if @books %>
+        <% @books.each do |book| %>
+          <%= render book %>
+        <% end %>
+      <% end %>
+  </div>
+</div>

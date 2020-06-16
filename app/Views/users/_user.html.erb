@@ -1,0 +1,12 @@
+<td><%= user.nickname %></td>
+<td><%= user.email %></td>
+<td>
+  <% unless user.super_admin? || user == current_user %>
+    <%= form_for user do |f| %>
+      <%= f.select :role, options_for_select(["Regular User", "Admin"], user.role)%>
+      <%= f.submit %>
+    <% end %>
+  <% else %>
+    <%= user.role %>
+  <% end %>
+</td>

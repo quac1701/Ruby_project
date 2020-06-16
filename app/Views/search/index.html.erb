@@ -1,0 +1,10 @@
+<div class="content-inside">
+  <h2>Search Result</h2>
+  <div class="row">
+    <% if @books %>
+      <% @books.each do |book| %>
+        <%= render book %>
+      <% end %>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,16 @@
+<div class="comments-header">
+  <h4>
+    <%= commentable.comment_threads.count == 0 ? "No" : commentable.comment_threads.count %> comments
+  </h4>
+</div>
+<% if current_user %>
+  <% if current_user.banned? %>
+    Cannot comment. Your account has been banned.
+  <% else %>
+    <%= render "comments/form", new_comment: new_comment %>
+  <% end %>
+<% end %>
+
+<div class="comments-container">
+  <%= render "comments/reply", comments: commentable.root_comments %>
+</div>

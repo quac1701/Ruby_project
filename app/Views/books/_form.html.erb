@@ -1,0 +1,64 @@
+<%= form_with(model: book, local: true, multipart: true) do |form| %>
+
+  <div class="form-group">
+    <%= form.label :title %>
+    <%= form.text_field :title, class: "form-control", id: :book_title %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :author %>
+    <%= form.text_field :author, class: "form-control", id: :book_author %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :public_year %>
+    <%= form.number_field :public_year, class: "form-control", id: :book_public_year %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :synopsis %>
+    <%= form.text_area :synopsis, class: "form-control", id: :book_synopsis%>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :link %>
+    <%= form.text_field :link, class: "form-control", id: :book_link %>
+  </div>
+
+  <div class="form-group">
+    <%= form.label :cover %>
+    <%= form.file_field :cover, class: "form-control", id: :book_cover %>
+    <%= form.hidden_field :cover_cache %>
+  </div>
+
+  <div class="form-check">
+    <%= form.label :categories %>
+    <% categories.each do |category| %>
+      <div>
+        <%= form.check_box :category_ids, {multiple: true}, category.id, nil%>
+        <%= category.name %>
+      </div>
+    <% end %>
+  </div>
+
+  <%= form.hidden_field :user_id, value: current_user.id %>
+  <% current_user.regular_user? ? status = "pending" : status = "accepted" %>
+  <%= form.hidden_field :status, value: status %>
+
+  <% if book.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(book.errors.count, "error") %> prohibited this book from being saved:</h2>
+
+      <ul>
+      <% book.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <br />
+  <div class="actions">
+    <%= form.submit t("books.update"), class:"btn btn-success" %>
+    <%= link_to t("books.discard"), books_path, class:"btn btn-link" %>
+  </div>
+<% end %>

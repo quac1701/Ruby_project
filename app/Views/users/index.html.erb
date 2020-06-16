@@ -1,0 +1,21 @@
+<div class= "container">
+<h1>List users</h1>
+<p id="notice"><%= notice %></p>
+<p id="alert"><%= alert %></p>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Nickname</th>
+      <th>Email</th>
+      <th>Role</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @users.each do |user| %>
+    <tr>
+      <%= render user %>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
+</div>
