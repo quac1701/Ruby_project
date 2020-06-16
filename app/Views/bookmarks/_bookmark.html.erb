@@ -1,0 +1,5 @@
+<%= form_for Bookmark.new, url: {controller: "bookmarks", action: "create"} do |f| %>
+  <%= f.hidden_field :book_id, value: book.id %>
+  <%= f.hidden_field :user_id, value: user.id %>
+  <%= f.submit t("bookmark.bookmark"), class: "btn btn-outline-success" %>
+<% end %>
